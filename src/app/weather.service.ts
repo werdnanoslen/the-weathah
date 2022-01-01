@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-export interface WeatherRequest {
-  latitude: string;
-  longitude: string;
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -15,8 +10,14 @@ export class WeatherService {
     private http: HttpClient
   ) { }
 
-  getWeather(weatherRequest?: WeatherRequest) {
-    const url = 'https://api.weather.gov/';
+  // Points is the location metadata, including a forecast url
+  getPoints(coords?: any) {
+    const baseUrl = 'https://api.weather.gov/points';
+    const url = `${baseUrl}/${coords.latitude},${coords.longitude}`;
     return this.http.get(url);
+  }
+
+  getWeather() {
+
   }
 }

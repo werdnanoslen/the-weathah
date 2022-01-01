@@ -7,23 +7,42 @@ import { WeatherService } from './weather.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'the-weathah';
-  map = true;
+  title: string = 'the-weathah';
+  map: boolean = true;
+  points: any = [];
   weather: any = [];
+  location!: {latitude: number, longitude: number};
 
   constructor(
     private weatherService: WeatherService
   ) { }
 
   ngOnInit(): void {
-    this.getWeather();
+    this.updateLocation()
+      .then((pos) => {
+        this.location = {
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude
+        }
+        this.getPoints();
+      })
+      .catch((err) => {
+        console.error(err.message);
+        this.getPoints();
+      });
   }
 
-  getWeather() {
-    this.weatherService.getWeather()
+  updateLocation(): Promise<any> {
+    return new Promise((resolve, reject) =>
+      navigator.geolocation.getCurrentPosition(resolve, reject)
+    );
+  }
+
+  getPoints() {
+    this.weatherService.getPoints(this.location)
       .subscribe(data => {
-        this.weather = data;
-        console.log(this.weather)
+        this.points = data;
+        console.log('points', this.points)
       })
   }
 }
