@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, mergeMap } from 'rxjs/operators';
+import { environment } from "../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -29,12 +30,10 @@ export class WeatherService {
   }
 
   getAQI(coords: any) {
-    // TODO: https://medium.com/@kudresov/a-better-way-to-inject-environmental-variables-in-angular-d3b2d01a3c5e#5f94
-    let aqiKey = '';
     let baseUrl = 'https://www.airnowapi.org/aq/forecast/latLong/?format=application/json';
     let lat = `&latitude=${coords.latitude}`;
     let lon = `&longitude=${coords.longitude}`;
-    let key = `&API_KEY=${aqiKey}`;
+    let key = `&API_KEY=${environment.aqiKey}`;
     let fullUrl = baseUrl + lat + lon + key;
     let res: any;
     return this.http.get(fullUrl);

@@ -1,0 +1,5 @@
+// Rename to `environment.ts.prod`
+export const environment = {
+  production: true,
+  aqiKey: 'abc123'
+};

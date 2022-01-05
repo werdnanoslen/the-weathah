@@ -50,4 +50,5 @@ Thumbs.db
 /plugins/
 /platforms/
 
-.env
+src/environments/environment.ts
+src/environments/environment.prod.ts
