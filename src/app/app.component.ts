@@ -9,7 +9,6 @@ import { WeatherService } from './weather.service';
 export class AppComponent implements OnInit {
   title: string = 'the-weathah';
   map: boolean = true;
-  points: any = [];
   weather: any = [];
   location!: {latitude: number, longitude: number};
 
@@ -24,11 +23,11 @@ export class AppComponent implements OnInit {
           latitude: pos.coords.latitude,
           longitude: pos.coords.longitude
         }
-        this.getPoints();
+        this.getWeather();
       })
       .catch((err) => {
         console.error(err.message);
-        this.getPoints();
+        this.getWeather();
       });
   }
 
@@ -38,11 +37,10 @@ export class AppComponent implements OnInit {
     );
   }
 
-  getPoints() {
-    this.weatherService.getPoints(this.location)
+  getWeather() {
+    this.weatherService.getWeather(this.location)
       .subscribe(data => {
-        this.points = data;
-        console.log('points', this.points)
+        this.weather = data;
       })
   }
 }

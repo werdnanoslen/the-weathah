@@ -2,7 +2,7 @@
 
 <app-alerts></app-alerts>
 
-<app-overview></app-overview>
+<app-overview [weather]="weather"></app-overview>
 
 <app-map *ngIf="map"></app-map>
 <button mat-icon-button aria-label="Forecast" (click)="map=!map" *ngIf="map">

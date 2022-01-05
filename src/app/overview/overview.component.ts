@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-overview',
@@ -7,16 +7,29 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class OverviewComponent implements OnInit {
   @Input() weather: any;
-  temperature = 0;
-  heatIndex = 0;
-  windSpeed = 0;
-  airQuality = 0;
-  precipitationAmount = 0;
-  precipitationType = 0;
+  description: string = '';
+  temperature: string = '';
+  tempQualifier: string = '';
+  windSpeed: string = '';
+  airQuality: string = '';
+  precipitationAmount: string = '';
+  precipitationType: string = '';
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['weather'].firstChange) return;
+    this.weather = changes['weather'].currentValue;
+    console.log(`current conditions: ${this.weather.id}`);
+    let w = this.weather.properties;
+
+    this.description = w.textDescription;
+    this.temperature = `${w.temperature.value} ºC`;
+    this.tempQualifier = `(feels like ${w.heatIndex.value | w.windChill.value} ºC)`;
+    this.windSpeed = `${w.windSpeed.value} kph`;
   }
 
 }
