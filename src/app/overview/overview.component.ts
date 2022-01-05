@@ -7,13 +7,12 @@ import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 })
 export class OverviewComponent implements OnInit {
   @Input() weather: any;
+  @Input() aqi: any;
   description: string = '';
   temperature: string = '';
   tempQualifier: string = '';
   windSpeed: string = '';
   airQuality: string = '';
-  precipitationAmount: string = '';
-  precipitationType: string = '';
 
   constructor() { }
 
@@ -21,15 +20,27 @@ export class OverviewComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['weather'].firstChange) return;
-    this.weather = changes['weather'].currentValue;
-    console.log(`current conditions: ${this.weather.id}`);
-    let w = this.weather.properties;
+    let newWeather = changes['weather'];
+    if (newWeather && newWeather.currentValue) {
+      this.weather = newWeather.currentValue;
+      let w: any = this.weather.properties;
+      this.description = w.textDescription;
+      this.temperature = `${w.temperature.value} ºC`;
+      let heatIndex: number = w.heatIndex.value;
+      let windChill: number = w.windChill.value;
+      if (heatIndex !== null) {
+        this.tempQualifier = heatIndex ? `(feels like ${heatIndex} ºC)` : '';
+      } else if (windChill !== null) {
+        this.tempQualifier = windChill ? `(feels like ${windChill} ºC)` : '';
+      }
+      this.windSpeed = `${w.windSpeed.value} kph`;
+    }
 
-    this.description = w.textDescription;
-    this.temperature = `${w.temperature.value} ºC`;
-    this.tempQualifier = `(feels like ${w.heatIndex.value | w.windChill.value} ºC)`;
-    this.windSpeed = `${w.windSpeed.value} kph`;
+    let newAQI = changes['aqi'];
+    if (newAQI && newAQI.currentValue) {
+      this.aqi = newAQI.currentValue[0];
+      this.airQuality = `${this.aqi.Category.Name} (${this.aqi.AQI})`;
+    }
   }
 
 }

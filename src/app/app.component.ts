@@ -9,7 +9,8 @@ import { WeatherService } from './weather.service';
 export class AppComponent implements OnInit {
   title: string = 'the-weathah';
   map: boolean = true;
-  weather: any = [];
+  weather: any;
+  aqi: any;
   location!: {latitude: number, longitude: number};
 
   constructor(
@@ -24,10 +25,12 @@ export class AppComponent implements OnInit {
           longitude: pos.coords.longitude
         }
         this.getWeather();
+        this.getAQI();
       })
       .catch((err) => {
         console.error(err.message);
         this.getWeather();
+        this.getAQI();
       });
   }
 
@@ -41,6 +44,13 @@ export class AppComponent implements OnInit {
     this.weatherService.getWeather(this.location)
       .subscribe(data => {
         this.weather = data;
+      })
+  }
+
+  getAQI() {
+    this.weatherService.getAQI(this.location)
+      .subscribe(data => {
+        this.aqi = data;
       })
   }
 }
