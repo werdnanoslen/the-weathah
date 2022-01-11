@@ -12,6 +12,7 @@ export class AppComponent implements OnInit {
   weather: any;
   aqi: any;
   location!: {latitude: number, longitude: number};
+  alerts: any;
 
   constructor(
     private weatherService: WeatherService
@@ -26,11 +27,13 @@ export class AppComponent implements OnInit {
         }
         this.getWeather();
         this.getAQI();
+        this.getAlerts();
       })
       .catch((err) => {
         console.error(err.message);
         this.getWeather();
         this.getAQI();
+        this.getAlerts();
       });
   }
 
@@ -51,6 +54,13 @@ export class AppComponent implements OnInit {
     this.weatherService.getAQI(this.location)
       .subscribe(data => {
         this.aqi = data;
+      })
+  }
+
+  getAlerts() {
+    this.weatherService.getAlerts(this.location)
+      .subscribe(data => {
+        this.alerts = data;
       })
   }
 }

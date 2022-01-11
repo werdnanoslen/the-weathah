@@ -39,4 +39,10 @@ export class WeatherService {
     return this.http.get(fullUrl);
   }
 
+  getAlerts(coords: any) {
+    let baseUrl = 'https://api.weather.gov/alerts/active?point';
+    let fullUrl = `${baseUrl}=${coords.latitude},${coords.longitude}`;
+    return this.http.get(fullUrl);
+  }
+
 }
