@@ -25,15 +25,15 @@ export class OverviewComponent implements OnInit {
       this.weather = newWeather.currentValue;
       let w: any = this.weather.properties;
       this.description = w.textDescription;
-      this.temperature = `${w.temperature.value} ºC`;
+      this.temperature = `${Math.round(w.temperature.value)} ºC`;
       let heatIndex: number = w.heatIndex.value;
       let windChill: number = w.windChill.value;
       if (heatIndex !== null) {
-        this.tempQualifier = heatIndex ? `(feels like ${heatIndex} ºC)` : '';
+        this.tempQualifier = `(feels like ${Math.round(heatIndex)} ºC)`;
       } else if (windChill !== null) {
-        this.tempQualifier = windChill ? `(feels like ${windChill} ºC)` : '';
+        this.tempQualifier = `(feels like ${Math.round(windChill)} ºC)`;
       }
-      this.windSpeed = `${w.windSpeed.value} kph`;
+      this.windSpeed = `${Math.round(w.windSpeed.value)} kph`;
     }
 
     let newAQI = changes['aqi'];
