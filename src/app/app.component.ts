@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
   map: boolean = true;
   weather: any;
   aqi: any;
-  location!: {latitude: number, longitude: number};
+  position!: {latitude: number, longitude: number};
   alerts: any;
 
   constructor(
@@ -19,9 +19,9 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.updateLocation()
+    this.updatePosition()
       .then((pos) => {
-        this.location = {
+        this.position = {
           latitude: pos.coords.latitude,
           longitude: pos.coords.longitude
         }
@@ -37,28 +37,28 @@ export class AppComponent implements OnInit {
       });
   }
 
-  updateLocation(): Promise<any> {
+  updatePosition(): Promise<any> {
     return new Promise((resolve, reject) =>
       navigator.geolocation.getCurrentPosition(resolve, reject)
     );
   }
 
   getWeather() {
-    this.weatherService.getWeather(this.location)
+    this.weatherService.getWeather(this.position)
       .subscribe(data => {
         this.weather = data;
       })
   }
 
   getAQI() {
-    this.weatherService.getAQI(this.location)
+    this.weatherService.getAQI(this.position)
       .subscribe(data => {
         this.aqi = data;
       })
   }
 
   getAlerts() {
-    this.weatherService.getAlerts(this.location)
+    this.weatherService.getAlerts(this.position)
       .subscribe(data => {
         this.alerts = data;
       })
