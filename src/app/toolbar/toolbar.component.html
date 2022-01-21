@@ -1,10 +1,9 @@
 <mat-toolbar color="primary">
-  <span>{{location}}</span>
+  <mat-form-field>
+    <input matInput [value]="locationString" name="Location">
+  </mat-form-field>
   <span class="example-spacer"></span>
-  <button mat-icon-button aria-label="Search">
-    <mat-icon>search</mat-icon>
-  </button>
   <button mat-icon-button aria-label="Settings">
-    <mat-icon>settings</mat-icon>
+    <mat-icon aria-hidden="true">settings</mat-icon>
   </button>
 </mat-toolbar>

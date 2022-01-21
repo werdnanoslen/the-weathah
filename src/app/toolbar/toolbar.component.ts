@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input, SimpleChanges} from '@angular/core';
 
 /**
  * @title Toolbar overview
@@ -9,5 +9,16 @@ import {Component} from '@angular/core';
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent {
-  location = "The Weathah";
+  @Input() position!: {latitude: number, longitude: number};
+  locationString: string = '';
+
+  ngOnChanges(changes: SimpleChanges) {
+    let newPosition = changes['position'];
+    if (newPosition && newPosition.currentValue) {
+      this.position = newPosition.currentValue;
+      let lat = this.position.latitude.toFixed(3);
+      let lon = this.position.longitude.toFixed(3);
+      this.locationString = lat + ', ' + lon;
+    }
+  }
 }
