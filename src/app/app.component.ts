@@ -6,59 +6,42 @@ import { WeatherService } from './weather.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title: string = 'the-weathah';
   map: boolean = true;
   weather: any;
   aqi: any;
-  position!: {latitude: number, longitude: number};
+  latlon!: {latitude: number, longitude: number};
   alerts: any;
 
   constructor(
     private weatherService: WeatherService
   ) { }
 
-  ngOnInit(): void {
-    this.updatePosition()
-      .then((pos) => {
-        this.position = {
-          latitude: pos.coords.latitude,
-          longitude: pos.coords.longitude
-        }
-        this.getWeather();
-        this.getAQI();
-        this.getAlerts();
-      })
-      .catch((err) => {
-        console.error(err.message);
-        this.getWeather();
-        this.getAQI();
-        this.getAlerts();
-      });
-  }
-
-  updatePosition(): Promise<any> {
-    return new Promise((resolve, reject) =>
-      navigator.geolocation.getCurrentPosition(resolve, reject)
-    );
+  latlonEmitterHandler(latlon: {latitude: number, longitude: number}) {
+    this.latlon = latlon;
+    console.log(this.latlon)
+    this.getWeather();
+    this.getAQI();
+    this.getAlerts();
   }
 
   getWeather() {
-    this.weatherService.getWeather(this.position)
+    this.weatherService.getWeather(this.latlon)
       .subscribe(data => {
         this.weather = data;
       })
   }
 
   getAQI() {
-    this.weatherService.getAQI(this.position)
+    this.weatherService.getAQI(this.latlon)
       .subscribe(data => {
         this.aqi = data;
       })
   }
 
   getAlerts() {
-    this.weatherService.getAlerts(this.position)
+    this.weatherService.getAlerts(this.latlon)
       .subscribe(data => {
         this.alerts = data;
       })

@@ -1,6 +1,9 @@
 <mat-toolbar color="primary">
   <mat-form-field>
-    <input matInput [value]="locationString" name="Location">
+    <input matInput
+      [value]="latlonString"
+      name="Location"
+      (change)="inputChange($event)">
   </mat-form-field>
   <span class="example-spacer"></span>
   <button mat-icon-button aria-label="Settings">

@@ -1,4 +1,6 @@
-<app-toolbar [position]="position"></app-toolbar>
+<app-toolbar
+  (latlonEmitter)="latlonEmitterHandler($event)">
+</app-toolbar>
 
 <app-alerts [alerts]="alerts"></app-alerts>
 

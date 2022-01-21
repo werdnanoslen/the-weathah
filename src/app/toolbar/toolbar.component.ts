@@ -1,4 +1,4 @@
-import {Component, Input, SimpleChanges} from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 /**
  * @title Toolbar overview
@@ -9,16 +9,47 @@ import {Component, Input, SimpleChanges} from '@angular/core';
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent {
-  @Input() position!: {latitude: number, longitude: number};
-  locationString: string = '';
+  @Output() latlon!: {latitude: number, longitude: number};
+  @Output() latlonEmitter: EventEmitter<any> = new EventEmitter();
+  latlonString: string = '';
 
-  ngOnChanges(changes: SimpleChanges) {
-    let newPosition = changes['position'];
-    if (newPosition && newPosition.currentValue) {
-      this.position = newPosition.currentValue;
-      let lat = this.position.latitude.toFixed(3);
-      let lon = this.position.longitude.toFixed(3);
-      this.locationString = lat + ', ' + lon;
+  inputChange(event: any) {
+    this.latlonString = event.target.value;
+    this.latlonChange();
+  }
+
+  latlonChange(): void {
+    let regex = /[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)/;
+    if (regex.test(this.latlonString)) {
+      let latlon = this.latlonString.split(',');
+      this.latlon = {
+        latitude: Number(latlon[0]),
+        longitude: Number(latlon[1])
+      };
+      this.latlonEmitter.emit(this.latlon);
     }
+  }
+
+  ngOnInit(): void {
+    this.getPosition()
+      .then((pos) => {
+        this.latlon = {
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude
+        };
+        let lat = this.latlon.latitude.toFixed(3);
+        let lon = this.latlon.longitude.toFixed(3);
+        this.latlonString = lat + ', ' + lon;
+        this.latlonChange()
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  }
+
+  getPosition(): Promise<any> {
+    return new Promise((resolve, reject) =>
+      navigator.geolocation.getCurrentPosition(resolve, reject)
+    );
   }
 }

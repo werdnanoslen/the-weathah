@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
@@ -23,7 +24,7 @@ import { ForecastComponent } from './forecast/forecast.component';
     OverviewComponent,
     MapComponent,
     AlertsComponent,
-    ForecastComponent
+    ForecastComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,7 +35,8 @@ import { ForecastComponent } from './forecast/forecast.component';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
